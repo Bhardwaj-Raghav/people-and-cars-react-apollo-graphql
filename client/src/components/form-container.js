@@ -1,6 +1,6 @@
 import { Col, Row } from "antd";
-import CarForm from "./form/car";
-import PersonForm from "./form/person";
+import AddCarForm from "./form/add-car";
+import AddPersonForm from "./form/add-person";
 import Title from "./title";
 
 const FormContainer = () => {
@@ -9,13 +9,13 @@ const FormContainer = () => {
       <Col span={12} justify="center" align="middle">
         <Col justify="center" align="middle">
           <Title text={"Add Person"} level={3} />
-          <PersonForm />
+          <AddPersonForm />
         </Col>
       </Col>
       <Col span={12}>
-      <Col justify="center" align="middle">
+        <Col justify="center" align="middle">
           <Title text={"Add Car"} level={3} />
-          <CarForm />
+          <AddCarForm />
         </Col>
       </Col>
     </Row>

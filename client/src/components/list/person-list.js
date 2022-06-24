@@ -1,5 +1,5 @@
-import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
-import { Button, Card, Col, List, Row } from "antd";
+import { Col, List, Row } from "antd";
+import PersonCard from "../card/person-card";
 import Title from "../title";
 
 const PersonList = () => {
@@ -12,162 +12,15 @@ const PersonList = () => {
           style={{
             display: "flex",
             justifyContent: "center",
+            width: "100%",
             alignItems: "center",
+            padding: "0 20px",
           }}
         >
           <List.Item>
-            <Card
-              style={{
-                width: "500px",
-                maxWidth: "700px",
-                marginBottom: "20px",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <div>
-                  {"firstName"} {"lastName"}
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                  }}
-                >
-                  <Button type="default">
-                    <EditTwoTone key="edit" onClick={() => {}} />
-                  </Button>
-                  <Button type="default" danger>
-                    <DeleteTwoTone
-                      key="delete"
-                      onClick={() => {}}
-                      twoToneColor="red"
-                    />
-                  </Button>
-                </div>
-              </div>
-              <div></div>
-            </Card>
-            <Card
-              style={{
-                width: "500px",
-                maxWidth: "700px",
-                marginBottom: "20px",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <div>
-                  {"firstName"} {"lastName"}
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                  }}
-                >
-                  <Button type="default">
-                    <EditTwoTone key="edit" onClick={() => {}} />
-                  </Button>
-                  <Button type="default" danger>
-                    <DeleteTwoTone
-                      key="delete"
-                      onClick={() => {}}
-                      twoToneColor="red"
-                    />
-                  </Button>
-                </div>
-              </div>
-              <div></div>
-            </Card>
-            <Card
-              style={{
-                width: "500px",
-                maxWidth: "700px",
-                marginBottom: "20px",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <div>
-                  {"firstName"} {"lastName"}
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                  }}
-                >
-                  <Button type="default">
-                    <EditTwoTone key="edit" onClick={() => {}} />
-                  </Button>
-                  <Button type="default" danger>
-                    <DeleteTwoTone
-                      key="delete"
-                      onClick={() => {}}
-                      twoToneColor="red"
-                    />
-                  </Button>
-                </div>
-              </div>
-              <div></div>
-            </Card>
-            <Card
-              style={{
-                width: "500px",
-                maxWidth: "700px",
-                marginBottom: "20px",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <div>
-                  {"firstName"} {"lastName"}
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                  }}
-                >
-                  <Button type="default">
-                    <EditTwoTone key="edit" onClick={() => {}} />
-                  </Button>
-                  <Button type="default" danger>
-                    <DeleteTwoTone
-                      key="delete"
-                      onClick={() => {}}
-                      twoToneColor="red"
-                    />
-                  </Button>
-                </div>
-              </div>
-              <div></div>
-            </Card>
+            <PersonCard
+              person={{ id: 1, firstname: "test", lastname: "last" }}
+            />
           </List.Item>
         </List>
       </Col>

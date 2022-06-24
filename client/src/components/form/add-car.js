@@ -9,7 +9,7 @@ import React from "react";
 
 const { Option } = Select;
 
-const CarForm = () => {
+const AddCarForm = () => {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
@@ -57,40 +57,48 @@ const CarForm = () => {
       >
         <Input placeholder="Model" prefix={<CarTwoTone />} />
       </Form.Item>
-
-      <Form.Item
-        name="price"
+      <div
         style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "16px",
           width: "300px",
         }}
-        rules={[{ required: true, message: "Please enter car price!" }]}
       >
-        <InputNumber
-          type={"number"}
-          style={{ width: "100%" }}
-          min="0.01"
-          step="0.01"
-          prefix={<DollarCircleTwoTone />}
-        />
-      </Form.Item>
+        <Form.Item
+          name="price"
+          style={{
+            width: "142px",
+          }}
+          rules={[{ required: true, message: "Please enter car price!" }]}
+        >
+          <InputNumber
+            type={"number"}
+            style={{ width: "100%" }}
+            min="0.01"
+            step="0.01"
+            prefix={<DollarCircleTwoTone />}
+          />
+        </Form.Item>
 
-      <Form.Item
-        name="year"
-        style={{
-          width: "300px",
-        }}
-        rules={[{ required: true, message: "Please enter car year!" }]}
-      >
-        <InputNumber
-          placeholder="Year"
-          type={"number"}
-          style={{ width: "100%" }}
-          min="2000"
-          step="1"
-          prefix={<CalendarTwoTone />}
-        />
-      </Form.Item>
-
+        <Form.Item
+          name="year"
+          style={{
+            width: "142px",
+          }}
+          rules={[{ required: true, message: "Please enter car year!" }]}
+        >
+          <InputNumber
+            placeholder="Year"
+            type={"number"}
+            style={{ width: "100%" }}
+            min="2000"
+            step="1"
+            prefix={<CalendarTwoTone />}
+          />
+        </Form.Item>
+      </div>
       <Form.Item
         style={{
           textAlign: "left",
@@ -121,4 +129,4 @@ const CarForm = () => {
   );
 };
 
-export default CarForm;
+export default AddCarForm;

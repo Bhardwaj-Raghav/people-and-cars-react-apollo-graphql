@@ -2,7 +2,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 import React from "react";
 
-const PersonForm = () => {
+const AddPersonForm = () => {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
@@ -73,4 +73,4 @@ const PersonForm = () => {
   );
 };
 
-export default PersonForm;
+export default AddPersonForm;

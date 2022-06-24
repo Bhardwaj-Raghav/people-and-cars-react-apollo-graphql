@@ -42,6 +42,7 @@ const AddCarForm = () => {
         name="make"
         style={{
           width: "300px",
+          justifyContent: "flex-start",
         }}
         rules={[{ required: true, message: "Please enter car make!" }]}
       >
@@ -104,6 +105,8 @@ const AddCarForm = () => {
           textAlign: "left",
           width: "300px",
         }}
+        name="personId"
+        rules={[{ required: true, message: "Please enter car Owner!" }]}
       >
         <Select
           showSearch

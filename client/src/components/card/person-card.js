@@ -41,6 +41,19 @@ const PersonCard = ({ person }) => {
       style={{
         marginBottom: "20px",
       }}
+      actions={[
+        <a
+          href="#here"
+          style={{
+            textAlign: "left",
+            marginLeft: "14px",
+            fontWeight: "bold",
+            color: "#1890ff",
+          }}
+        >
+          LEARN MORE
+        </a>,
+      ]}
     >
       <div
         style={{

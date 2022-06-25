@@ -7,6 +7,7 @@ import {
 
 import React from "react";
 import EditCardFormCardHeader from "../miscellaneous/edit-car-form-card-header";
+import { useSelector } from "react-redux";
 
 const { Option } = Select;
 
@@ -19,16 +20,18 @@ const EditCarForm = ({
   saveOnClick,
   cancelOnClick,
 }) => {
+  const personsName = useSelector((state) =>
+    state.people.persons.map((person) => ({
+      id: person.id,
+      name: person.firstname + " " + person.lastname,
+    }))
+  );
+
   const [form] = Form.useForm();
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
-  // year (int), make (string),
-  // model (string),
-  // price (float) and
-  // personId (string, the personId should be a dropdown select box with the choices being the person names)
 
   return (
     <Form
@@ -124,10 +127,11 @@ const EditCarForm = ({
             placeholder="Select a person"
             optionFilterProp="children"
           >
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="1">Test</Option>
-            <Option value="tom">Tom</Option>
+            {personsName.map((person) => (
+              <Option key={person.id} value={person.id}>
+                {person.name}
+              </Option>
+            ))}
           </Select>
         </Form.Item>
       </Card>

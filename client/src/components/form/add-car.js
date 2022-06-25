@@ -1,30 +1,59 @@
+import React from "react";
 import { Button, Form, Input, InputNumber, Select } from "antd";
 import {
   CalendarTwoTone,
   DollarCircleTwoTone,
   CarTwoTone,
 } from "@ant-design/icons";
+import { v4 as uuidv4 } from "uuid";
+import { useDispatch, useSelector } from "react-redux";
+import { useMutation } from "@apollo/client";
 
-import React from "react";
+import { addCar } from "../../store/person";
+import { ADD_CAR } from "../../queries";
 
 const { Option } = Select;
 
 const AddCarForm = () => {
+  const dispatch = useDispatch();
+  const [createCarMutation] = useMutation(ADD_CAR);
   const [form] = Form.useForm();
+  const personsName = useSelector((state) =>
+    state.people.persons.map((person) => ({
+      id: person.id,
+      name: person.firstname + " " + person.lastname,
+    }))
+  );
 
   const onFinish = (values) => {
     console.log("Success:", values);
+    const newCarId = uuidv4();
+    dispatch(
+      addCar({
+        id: newCarId,
+        make: values.make,
+        model: values.model,
+        price: values.price,
+        year: values.year,
+        personId: values.personId,
+      })
+    );
+    createCarMutation({
+      variables: {
+        id: newCarId,
+        make: values.make,
+        model: values.model,
+        price: values.price.toString(),
+        year: values.year.toString(),
+        personId: values.personId,
+      },
+    });
     form.resetFields();
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
-  // year (int), make (string),
-  // model (string),
-  // price (float) and
-  // personId (string, the personId should be a dropdown select box with the choices being the person names)
 
   return (
     <Form
@@ -113,9 +142,11 @@ const AddCarForm = () => {
           placeholder="Select a person"
           optionFilterProp="children"
         >
-          <Option value="jack">Jack</Option>
-          <Option value="lucy">Lucy</Option>
-          <Option value="tom">Tom</Option>
+          {personsName.map((person) => (
+            <Option key={person.id} value={person.id}>
+              {person.name}
+            </Option>
+          ))}
         </Select>
       </Form.Item>
 

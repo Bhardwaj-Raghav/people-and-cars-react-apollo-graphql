@@ -1,28 +1,62 @@
+import { useMutation } from "@apollo/client";
 import { Card, Typography } from "antd";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { REMOVE_CAR, UPDATE_CAR } from "../../queries";
+import { moveCarToPerson, removeCar, updateCar } from "../../store/person";
 import EditCarForm from "../form/edit-car";
 import CardHeader from "../miscellaneous/card-header";
 
 const Text = Typography.Text;
 
-const CarCard = ({ personCar }) => {
+const CarCard = ({ personCar, personName, isDetailPage = false }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const dispatch = useDispatch();
+  const [updateCarMutation] = useMutation(UPDATE_CAR);
+  const [removeCarMutation] = useMutation(REMOVE_CAR);
 
-  const handleEdit = (values) => {
-    console.log(values);
+  const handleEdit = (updatedValues) => {
+    if (updatedValues.personId !== personCar.personId) {
+      dispatch(
+        moveCarToPerson({
+          oldPersonId: personCar.personId,
+          newPersonId: updatedValues.personId,
+          carId: personCar.id,
+        })
+      );
+    }
+    dispatch(
+      updateCar({
+        id: personCar.id,
+        ...updatedValues,
+      })
+    );
+    updateCarMutation({
+      variables: {
+        id: personCar.id,
+        ...updatedValues,
+        year: updatedValues.year.toString(),
+        price: updatedValues.price.toString(),
+      },
+    });
+    setIsEditing(false);
   };
   const handleDelete = (carId) => {
-    console.log(carId);
+    dispatch(removeCar({ personId: personCar.personId, carId: personCar.id }));
+    removeCarMutation({
+      variables: {
+        id: carId,
+      },
+    });
   };
 
   return isEditing ? (
     <EditCarForm
-      make={"make,"}
-      model={"model,"}
-      year={2022}
-      price={100}
-      personId={"1"}
-      personCar={{ carId: 1 }}
+      make={personCar.make}
+      model={personCar.model}
+      year={Number(personCar.year)}
+      price={Number(personCar.price)}
+      personId={personCar.personId}
       cancelOnClick={() => setIsEditing(false)}
       saveOnClick={handleEdit}
     />
@@ -30,11 +64,15 @@ const CarCard = ({ personCar }) => {
     <Card
       type="inner"
       title={
-        <CardHeader
-          title={"Car Details"}
-          editOnClick={() => setIsEditing(true)}
-          deleteOnClick={() => handleDelete(personCar.id)}
-        />
+        isDetailPage ? (
+          "Car Details"
+        ) : (
+          <CardHeader
+            title={"Car Details"}
+            editOnClick={() => setIsEditing(true)}
+            deleteOnClick={() => handleDelete(personCar.id)}
+          />
+        )
       }
     >
       <div
@@ -44,11 +82,11 @@ const CarCard = ({ personCar }) => {
           gridTemplateColumns: "repeat(auto-fit, 1fr)",
         }}
       >
-        <Text>Make: Long name for Car Make</Text>
-        <Text>Model: Long name for Car Make</Text>
-        <Text>Year: 2022</Text>
-        <Text>Price: Long name for Car Make</Text>
-        <Text>Person: Long name for Car Make</Text>
+        <Text>Make: {personCar.make}</Text>
+        <Text>Model: {personCar.model}</Text>
+        <Text>Year: {personCar.year}</Text>
+        <Text>Price: ${Number(personCar.price).toFixed(2)}</Text>
+        <Text>Person: {personName}</Text>
       </div>
     </Card>
   );

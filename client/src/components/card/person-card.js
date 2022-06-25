@@ -1,18 +1,44 @@
+import { useMutation } from "@apollo/client";
 import { Card } from "antd";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { REMOVE_PERSON, UPDATE_PERSON } from "../../queries";
+import { removePerson, updatePerson } from "../../store/person";
+
 import EditPersonForm from "../form/edit-person";
 import CardHeader from "../miscellaneous/card-header";
+import Title from "../title";
 import CarCard from "./car-card";
 
-const PersonCard = ({ person }) => {
+const PersonCard = ({ person, isDetailPage = false }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const dispatch = useDispatch();
+  const [updatePersonMutation] = useMutation(UPDATE_PERSON);
+  const [removePersonMutation] = useMutation(REMOVE_PERSON);
 
   const handleEdit = (updatedValues) => {
-    console.log(updatedValues);
+    dispatch(
+      updatePerson({
+        ...person,
+        ...updatedValues,
+      })
+    );
+    updatePersonMutation({
+      variables: {
+        id: person.id,
+        ...updatedValues,
+      },
+    });
     setIsEditing(false);
   };
   const handleDelete = (personId) => {
-    console.log(personId);
+    dispatch(removePerson(personId));
+    removePersonMutation({
+      variables: {
+        id: personId,
+      },
+    });
   };
 
   return (
@@ -30,6 +56,8 @@ const PersonCard = ({ person }) => {
             firstname={person.firstname}
             lastname={person.lastname}
           />
+        ) : isDetailPage ? (
+          person.firstname + " " + person.lastname
         ) : (
           <CardHeader
             title={person.firstname + " " + person.lastname}
@@ -39,39 +67,47 @@ const PersonCard = ({ person }) => {
         )
       }
       style={{
+        margin: isDetailPage ? "50px" : "0px",
         marginBottom: "20px",
       }}
-      actions={[
-        <a
-          href="#here"
-          style={{
-            textAlign: "left",
-            marginLeft: "14px",
-            fontWeight: "bold",
-            color: "#1890ff",
-          }}
-        >
-          LEARN MORE
-        </a>,
-      ]}
+      actions={
+        isDetailPage
+          ? []
+          : [
+              <Link
+                to={`/people/${person.id}`}
+                style={{
+                  textAlign: "left",
+                  marginLeft: "14px",
+                  fontWeight: "bold",
+                  color: "#1890ff",
+                  display: "inline",
+                }}
+              >
+                LEARN MORE
+              </Link>,
+            ]
+      }
     >
       <div
         style={{
           display: "grid",
           gap: "20px",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
         }}
       >
-        <CarCard personCar={{ carId: 1 }} />
-        <CarCard personCar={{ carId: 1 }} />
-        <CarCard personCar={{ carId: 1 }} />
-        <CarCard personCar={{ carId: 1 }} />
-        <CarCard personCar={{ carId: 1 }} />
-        <CarCard personCar={{ carId: 1 }} />
-        <CarCard personCar={{ carId: 1 }} />
-        <CarCard personCar={{ carId: 1 }} />
-        <CarCard personCar={{ carId: 1 }} />
-        <CarCard personCar={{ carId: 1 }} />
+        {person.cars.length ? (
+          person.cars.map((car) => (
+            <CarCard
+              key={car.id}
+              personCar={car}
+              personName={`${person.firstname} ${person.lastname}`}
+              isDetailPage={isDetailPage}
+            />
+          ))
+        ) : (
+          <Title text={"No Cars Available"} level={3} />
+        )}
       </div>
     </Card>
   );

@@ -12,4 +12,9 @@ body {
 }
 ul.ant-card-actions li > span {
   text-align: left;
+  display: inline;
+  cursor: default;
+}
+ul.ant-card-actions li {
+  text-align: left;
 }

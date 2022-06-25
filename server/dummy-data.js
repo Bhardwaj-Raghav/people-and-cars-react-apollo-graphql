@@ -1,18 +1,18 @@
 const people = [
   {
     id: "1",
-    firstName: "Bill",
-    lastName: "Gates",
+    firstname: "Bill",
+    lastname: "Gates",
   },
   {
     id: "2",
-    firstName: "Steve",
-    lastName: "Jobs",
+    firstname: "Steve",
+    lastname: "Jobs",
   },
   {
     id: "3",
-    firstName: "Linux",
-    lastName: "Torvalds",
+    firstname: "Linux",
+    lastname: "Torvalds",
   },
 ];
 

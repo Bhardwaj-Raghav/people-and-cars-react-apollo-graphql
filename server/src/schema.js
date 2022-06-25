@@ -4,8 +4,8 @@ import { people, cars } from "../dummy-data";
 const typeDefs = gql`
   type Person {
     id: String!
-    firstName: String
-    lastName: String
+    firstname: String
+    lastname: String
     cars: [Car]
   }
   type Car {
@@ -25,7 +25,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createPerson(id: String!, firstName: String!, lastName: String!): Person
+    createPerson(id: String!, firstname: String!, lastname: String!): Person
     createCar(
       id: String!
       year: String!
@@ -34,7 +34,7 @@ const typeDefs = gql`
       price: String!
       personId: String!
     ): Car
-    updatePerson(id: String!, firstName: String, lastName: String): Person
+    updatePerson(id: String!, firstname: String, lastname: String): Person
     updateCar(
       id: String!
       year: String
@@ -71,19 +71,19 @@ const resolvers = {
     car: (_, { id }) => cars.find((car) => car.id === id),
   },
   Mutation: {
-    createPerson: (_, { id, firstName, lastName }) => {
+    createPerson: (_, { id, firstname, lastname }) => {
       const newPerson = {
-        id: String(people.length + 1),
-        firstName,
-        lastName,
+        id: id,
+        firstname,
+        lastname,
         cars: [],
       };
       people.push(newPerson);
       return newPerson;
     },
-    createCar: (_, { year, make, model, price, personId }) => {
+    createCar: (_, { id, year, make, model, price, personId }) => {
       const newCar = {
-        id: String(cars.length + 1),
+        id: id,
         year,
         make,
         model,
@@ -93,13 +93,13 @@ const resolvers = {
       cars.push(newCar);
       return newCar;
     },
-    updatePerson: (_, { id, firstName, lastName }) => {
+    updatePerson: (_, { id, firstname, lastname }) => {
       const person = people.find((person) => person.id === id);
       if (!person) {
         throw new Error("Person not found");
       }
-      if (firstName) person.firstName = firstName;
-      if (lastName) person.lastName = lastName;
+      if (firstname) person.firstname = firstname;
+      if (lastname) person.lastname = lastname;
       return person;
     },
     updateCar: (_, { id, year, make, model, price, personId }) => {
@@ -119,6 +119,7 @@ const resolvers = {
       if (!person) {
         throw new Error("Person not found");
       }
+      cars.filter((car) => car.personId !== id);
       people.splice(people.indexOf(person), 1);
       return person;
     },

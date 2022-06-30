@@ -33,6 +33,12 @@ const PersonCard = ({ person, isDetailPage = false }) => {
     setIsEditing(false);
   };
   const handleDelete = (personId) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this person? This action cannot be undone."
+    );
+    if (!confirm) {
+      return;
+    }
     dispatch(removePerson(personId));
     removePersonMutation({
       variables: {

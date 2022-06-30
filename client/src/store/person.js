@@ -2,12 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   persons: [],
+  dataFetched: false,
 };
 
 export const counterSlice = createSlice({
   name: "person",
   initialState,
   reducers: {
+    setDataFetched: (state) => {
+      state.dataFetched = true;
+    },
     setPerson: (state, action) => {
       state.persons = action.payload;
     },
@@ -87,6 +91,7 @@ export const {
   removeCar,
   moveCarToPerson,
   updateCar,
+  setDataFetched,
 } = counterSlice.actions;
 
 export default counterSlice.reducer;

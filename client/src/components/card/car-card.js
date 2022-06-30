@@ -42,6 +42,12 @@ const CarCard = ({ personCar, personName, isDetailPage = false }) => {
     setIsEditing(false);
   };
   const handleDelete = (carId) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this Car? This action cannot be undone."
+    );
+    if (!confirm) {
+      return;
+    }
     dispatch(removeCar({ personId: personCar.personId, carId: personCar.id }));
     removeCarMutation({
       variables: {

@@ -1,23 +1,22 @@
 import { useQuery } from "@apollo/client";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import FormContainer from "../form-container";
 import PersonList from "../list/person-list";
 import Loader from "../miscellaneous/loader";
 import ErrorMessage from "../miscellaneous/error-message";
 
-import { setPerson } from "../../store/person";
+import { setPerson, setDataFetched } from "../../store/person";
 
 import { GET_PERSONS } from "../../queries";
-import { useState } from "react";
 
 const Home = () => {
-  const [dataFetchedOnce, setDataFetchedOnce] = useState(false);
+  const dataFetched = useSelector((state) => state.people.dataFetched);
 
   const { loading, error, data } = useQuery(GET_PERSONS);
   const dispatch = useDispatch();
-  if (data && !dataFetchedOnce) {
-    setDataFetchedOnce(true);
+  if (data && !dataFetched) {
+    dispatch(setDataFetched());
     dispatch(setPerson(data.people));
   }
 

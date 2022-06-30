@@ -1,4 +1,5 @@
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
+import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { GET_PERSON } from "../../queries";
 import PersonCard from "../card/person-card";
@@ -7,15 +8,29 @@ import Loader from "../miscellaneous/loader";
 
 const PersonDetail = () => {
   const { id } = useParams();
-  const { loading, error, data } = useQuery(GET_PERSON, {
+  const person = useSelector((state) =>
+    state.people.persons.find((p) => p.id === id)
+  );
+
+  const [loadPerson, { loading, error, data }] = useLazyQuery(GET_PERSON, {
     variables: { id },
   });
+  let personData = null;
+  // Since apollo caches response checking if person exists in state use that else use cache
+  if (person) {
+    personData = { person };
+  } else {
+    if (!data && !loading && !error) {
+      loadPerson();
+    }
+    personData = data;
+  }
 
   return (
     <>
       <Loader isLoading={loading} />
       {error ? <ErrorMessage message={error.message} /> : null}
-      {data ? (
+      {personData ? (
         <>
           <Link
             to="/"
@@ -28,8 +43,8 @@ const PersonDetail = () => {
             GO BACK HOME
           </Link>
           <PersonCard
-            key={data.person.id}
-            person={data.person}
+            key={personData.person.id}
+            person={personData.person}
             isDetailPage={true}
           />
         </>

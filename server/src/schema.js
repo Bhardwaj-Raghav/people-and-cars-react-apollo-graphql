@@ -1,5 +1,7 @@
 import { gql } from "apollo-server-express";
-import { people, cars } from "../dummy-data";
+import { people, cars as _cars } from "../dummy-data";
+
+let cars = _cars;
 
 const typeDefs = gql`
   type Person {
@@ -119,7 +121,7 @@ const resolvers = {
       if (!person) {
         throw new Error("Person not found");
       }
-      cars.filter((car) => car.personId !== id);
+      cars = cars.filter((car) => car.personId !== id);
       people.splice(people.indexOf(person), 1);
       return person;
     },
